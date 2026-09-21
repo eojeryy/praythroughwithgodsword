@@ -1,0 +1,38 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold" x1="128" y1="32" x2="384" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF8D6"/>
+      <stop offset="0.2" stop-color="#F3D77A"/>
+      <stop offset="0.5" stop-color="#D9A62A"/>
+      <stop offset="0.78" stop-color="#B77714"/>
+      <stop offset="1" stop-color="#FFF1A8"/>
+    </linearGradient>
+    <linearGradient id="navy" x1="40" y1="48" x2="468" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F4BA3"/>
+      <stop offset="1" stop-color="#0B2E68"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="44" fill="url(#navy)"/>
+
+  <g transform="translate(82 54) rotate(-12 164 200)">
+    <path d="M120 20H196C210.5 20 222 31.5 222 46V226C222 292.5 187.5 342 122.5 392C94 413 74 434.5 62 458L28 426C48 394 72 364.5 96 332.5C118 303 134 270.5 134 236V88C134 76.5 124.5 68 113 68H62C34 68 25.5 97 44.5 114L124 187L93 218L18 144C-8 118 5 68 46 68H114C155.5 68 186 95 186 136V216C186 286 158.5 336.5 104 384L76 407L52 380C94.5 339 120 298.5 120 246V20Z" fill="#F3F0EA"/>
+    <path d="M54 72L154 150L125 183L28 106L54 72Z" fill="#F8F6F2" opacity="0.9"/>
+    <path d="M202 128L258 103L300 160L312 178L260 197L202 128Z" fill="#F7F3EA"/>
+    <path d="M208 154L260 188L314 172L300 144L258 102L208 154Z" fill="#E6E0D4" opacity="0.7"/>
+    <path d="M232 194L282 197L277 235L238 251L232 194Z" fill="#E9BC4B"/>
+    <path d="M270 160L328 135L356 176L298 194L270 160Z" fill="url(#gold)"/>
+    <path d="M250 204L330 186L320 238L260 258L250 204Z" fill="#F2C95A" opacity="0.8"/>
+    <path d="M224 210L300 252L310 316L245 310L224 210Z" fill="url(#gold)"/>
+    <path d="M258 218L334 278L338 328L260 282L258 218Z" fill="#0A2558" opacity="0.75"/>
+  </g>
+
+  <g filter="url(#gold)" opacity="0.9">
+    <rect x="256" y="68" width="56" height="184" rx="12" fill="url(#gold)"/>
+    <rect x="180" y="140" width="208" height="52" rx="12" fill="url(#gold)"/>
+  </g>
+
+  <g opacity="0.95">
+    <path d="M300 276C348 252 352 310 375 333C392 349 420 359 447 358L420 397C395 398 366 387 342 366C316 344 286 332 245 332L240 280C264 277 286 277 300 276Z" fill="#F0E8D1"/>
+  </g>
+</svg>

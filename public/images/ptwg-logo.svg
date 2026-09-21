@@ -1,0 +1,100 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold" x1="284" y1="80" x2="996" y2="826" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF8D6"/>
+      <stop offset="0.18" stop-color="#F3D77A"/>
+      <stop offset="0.45" stop-color="#D9A62A"/>
+      <stop offset="0.72" stop-color="#B77714"/>
+      <stop offset="1" stop-color="#FFF1A8"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1400" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B4EA1"/>
+      <stop offset="1" stop-color="#0A3A7A"/>
+    </linearGradient>
+    <filter id="goldGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="900" fill="url(#blue)"/>
+
+  <g opacity="0.9" filter="url(#softGlow)">
+    <circle cx="704" cy="170" r="86" fill="#FCE7A0"/>
+  </g>
+
+  <g filter="url(#goldGlow)">
+    <g transform="translate(690 0)">
+      <rect x="-18" y="0" width="36" height="200" rx="8" fill="url(#gold)"/>
+      <rect x="-150" y="74" width="300" height="42" rx="8" fill="url(#gold)"/>
+      <rect x="-13" y="0" width="26" height="198" fill="#F4E4A5" opacity="0.7"/>
+      <rect x="-145" y="79" width="290" height="32" fill="#F4E4A5" opacity="0.7"/>
+    </g>
+  </g>
+
+  <g transform="translate(190 140) rotate(-18 440 260)">
+    <path d="M460 20H580C598 20 612 34 612 52V350C612 472 540 570 452 634C406 666 360 704 332 744L280 692C325 632 381 585 432 534C466 500 492 460 492 412V116C492 99 479 86 462 86H335C300 86 286 126 314 148L424 244L370 286L272 188C230 150 255 86 304 86H457C511 86 560 128 560 182V420C560 510 522 574 456 640L410 682L358 638C422 579 458 522 458 444V162C458 131 451 104 440 80L460 20Z" fill="#F1EFE9"/>
+    <path d="M262 66L395 155L344 209L232 124L262 66Z" fill="#F8F7F2" opacity="0.9"/>
+    <path d="M245 114L377 200L355 230L236 149L245 114Z" fill="#E7E2D5" opacity="0.5"/>
+    <path d="M590 146L660 110L720 198L742 230L638 270L590 146Z" fill="#F7F3EA"/>
+    <path d="M598 148L640 248L742 222L712 180L640 128L598 148Z" fill="#E7E2D5" opacity="0.7"/>
+    <path d="M572 86H682C738 86 770 120 770 178V364C770 420 744 482 662 528L564 586L540 552L630 494C696 454 714 412 714 364V214C714 182 699 164 670 164H620L572 86Z" fill="#0F2F6B"/>
+    <path d="M604 98H670C720 98 748 128 748 176V364C748 416 720 470 650 510L580 552L558 518L626 478C682 446 704 410 704 364V188C704 155 689 136 662 136H620L604 98Z" fill="#112E63"/>
+    <path d="M428 716L758 464L800 514L466 766L428 716Z" fill="url(#gold)"/>
+    <path d="M605 364L688 402L706 422L602 526L577 494L605 364Z" fill="#F9E7A3"/>
+    <path d="M690 332L822 264L858 306L736 376L690 332Z" fill="url(#gold)"/>
+    <path d="M696 337L846 274L878 308L750 377L696 337Z" fill="#F5D37A" opacity="0.8"/>
+    <path d="M662 412L772 400L764 446L678 474L662 412Z" fill="#E9BC4B"/>
+    <path d="M462 85H595C620 85 638 100 638 124V272C638 310 610 342 574 342H526C490 342 462 310 462 272V85Z" fill="#F8F7F3" opacity="0.9"/>
+    <path d="M480 111H578C590 111 600 121 600 133V257C600 287 576 312 546 312H496C466 312 442 287 442 257V133C442 121 452 111 464 111H480Z" fill="#F0EFE9" opacity="0.5"/>
+    <path d="M780 280L922 334L980 918L894 944L780 280Z" fill="url(#gold)" opacity="0.98"/>
+    <path d="M836 292L970 354L1004 702L936 690L836 292Z" fill="#F2C95A" opacity="0.82"/>
+    <path d="M828 276L840 876L780 876L780 336L828 276Z" fill="#6A3F14" opacity="0.8"/>
+    <path d="M750 318L998 634L1000 686L748 366L750 318Z" fill="#0A2558" opacity="0.7"/>
+  </g>
+
+  <g transform="translate(0 12)">
+    <path d="M424 438C513 428 587 441 645 472C689 497 720 533 733 576L786 564C759 492 704 426 635 391C559 353 470 342 374 357L424 438Z" fill="#0F2F6B" opacity="0.7"/>
+    <path d="M392 438C402 468 404 496 402 525C399 610 318 667 240 667C200 667 168 654 146 632L184 601C206 618 232 625 260 625C318 625 364 579 368 519C370 485 358 454 340 428L392 438Z" fill="#E5E2D8" opacity="0.9"/>
+    <path d="M251 571L391 430L430 470L300 603L251 571Z" fill="#F4F1EC" opacity="0.85"/>
+    <path d="M770 560C880 540 978 575 1040 648L1008 704C944 658 887 636 820 640L770 560Z" fill="#F2E7B3" opacity="0.85"/>
+  </g>
+
+  <g>
+    <path d="M560 650C625 616 675 626 736 660L707 711C646 681 607 678 549 704L560 650Z" fill="#0F2F6B" opacity="0.9"/>
+    <path d="M548 384L584 384L584 666L548 666L548 384Z" fill="#F2D980" opacity="0.35"/>
+  </g>
+
+  <g transform="translate(0 8)">
+    <path d="M328 684C506 684 628 693 757 737C915 788 1049 784 1160 760L1187 801C1067 840 924 848 758 807C621 771 493 758 312 764L328 684Z" fill="#0F294F" opacity="0.55"/>
+    <path d="M770 675C866 666 959 679 1037 717L1027 768C959 744 882 742 799 757L770 675Z" fill="#0F2F6B" opacity="0.9"/>
+  </g>
+
+  <g filter="url(#goldGlow)">
+    <path d="M508 0H892L923 32L892 64H508L477 32L508 0Z" fill="#A9741A" opacity="0.85"/>
+  </g>
+
+  <g>
+    <text x="700" y="612" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="260" font-weight="700" fill="#F7F4EE" letter-spacing="4">PTWG</text>
+    <path d="M360 662H1040" stroke="#E8C561" stroke-width="6" stroke-linecap="round"/>
+    <path d="M430 700H970" stroke="#F5D98D" stroke-width="3" opacity="0.8"/>
+  </g>
+
+  <g transform="translate(0 16)">
+    <path d="M270 760C433 783 538 792 700 792C854 792 981 782 1130 758L1174 798C1038 831 882 846 700 846C529 846 387 831 250 796L270 760Z" fill="#0A2456" opacity="0.88"/>
+    <path d="M540 760H860" stroke="#E8C670" stroke-width="4" stroke-linecap="round"/>
+    <path d="M510 782C596 808 650 818 700 818C750 818 811 806 890 782" stroke="#E8C670" stroke-width="3" opacity="0.8" fill="none"/>
+    <path d="M402 730H998" stroke="#D3A53E" stroke-width="3" opacity="0.9"/>
+  </g>
+
+  <g>
+    <text x="700" y="765" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="44" font-weight="700" fill="#F3E0A1" letter-spacing="4">PrayThroughWithGodsword.com</text>
+  </g>
+</svg>

@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>@yield('title', 'PrayThroughWithGodsword.com')</title>
+  <link rel="icon" type="image/svg+xml" href="{{ asset('images/ptwg-favicon.svg') }}" />
+  <link rel="shortcut icon" href="{{ asset('images/ptwg-favicon.svg') }}" />
+  <link rel="apple-touch-icon" href="{{ asset('images/ptwg-favicon.svg') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 </head>
@@ -15,8 +18,8 @@
 
 <header class="site-header" id="site-header">
   <div class="header-shell">
-    <a href="{{ route('home') }}" class="brand">
-      <span class="brand-mark">P</span>
+    <a href="{{ route('home') }}" class="brand" aria-label="PrayThroughWithGodsword.com home">
+      <img src="{{ asset('images/ptwg-logo.svg') }}" alt="PTWG logo" class="brand-logo" />
       <span class="brand-copy">
         <strong>PTWG</strong>
         <small>PrayThroughWithGodsword.com</small>
@@ -102,8 +105,8 @@
 <footer class="site-footer" id="contact">
   <div class="footer-top">
     <div class="footer-brand">
-      <a href="{{ route('home') }}" class="footer-logo">
-        <span class="footer-logo-mark">P</span>
+      <a href="{{ route('home') }}" class="footer-logo" aria-label="PrayThroughWithGodsword.com home">
+        <img src="{{ asset('images/ptwg-logo.svg') }}" alt="PTWG logo" class="footer-logo-image" />
         <span class="footer-logo-copy">
           <strong>PTWG</strong>
           <small>PrayThroughWithGodsword.com</small>
