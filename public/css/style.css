@@ -101,7 +101,16 @@ a {
   min-width: 0;
 }
 
-.brand-logo,
+.brand-logo {
+  width: 92px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+  box-shadow: 0 6px 16px rgba(8, 25, 48, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+}
+
 .footer-logo-image {
   width: 148px;
   height: auto;
