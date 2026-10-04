@@ -103,8 +103,8 @@ a {
 
 .brand-logo,
 .footer-logo-image {
-  width: 46px;
-  height: 46px;
+  width: 148px;
+  height: auto;
   object-fit: contain;
   border-radius: 12px;
   display: block;
