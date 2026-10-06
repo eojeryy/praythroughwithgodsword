@@ -102,22 +102,22 @@ a {
 }
 
 .brand-logo {
-  width: 92px;
+  width: 68px;
   height: auto;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 10px;
   display: block;
-  box-shadow: 0 6px 16px rgba(8, 25, 48, 0.16);
+  box-shadow: 0 4px 12px rgba(8, 25, 48, 0.14);
   background: rgba(255, 255, 255, 0.04);
 }
 
 .footer-logo-image {
-  width: 148px;
+  width: 110px;
   height: auto;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 10px;
   display: block;
-  box-shadow: 0 6px 16px rgba(8, 25, 48, 0.16);
+  box-shadow: 0 4px 12px rgba(8, 25, 48, 0.14);
   background: rgba(255, 255, 255, 0.04);
 }
 
