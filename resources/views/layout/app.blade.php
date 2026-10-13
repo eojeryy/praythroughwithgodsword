@@ -19,7 +19,7 @@
 <header class="site-header" id="site-header">
   <div class="header-shell">
     <a href="{{ route('home') }}" class="brand" aria-label="PrayThroughWithGodsword.com home">
-      <img src="{{ asset('images/ptwg-logo.svg') }}" alt="PTWG logo" class="brand-logo" />
+      <img src="{{ asset('images/ptwg-header-logo.png') }}" alt="PTWG logo" class="brand-logo" width="96" height="96" />
       <span class="brand-copy">
         <strong>PTWG</strong>
         <small>PrayThroughWithGodsword.com</small>
