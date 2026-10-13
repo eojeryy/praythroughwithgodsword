@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Change Password')
-@section('body_class', 'admin-auth-body')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
@@ -21,20 +21,22 @@
             <span class="admin-dashboard-panel-tag">Password form</span>
             <h2>Update your password</h2>
           </div>
-          <form class="admin-auth-form">
+          <form action="{{ route('admin.change-password.update') }}" method="POST" class="admin-auth-form">
+            @csrf
+            @method('PUT')
             <label class="admin-auth-field">
               <span>Current Password</span>
-              <input type="password" name="current_password" placeholder="Enter current password" />
+              <input type="password" name="current_password" autocomplete="current-password" required placeholder="Enter current password" />
             </label>
             <label class="admin-auth-field">
               <span>New Password</span>
-              <input type="password" name="new_password" placeholder="Enter new password" />
+              <input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="Enter new password" />
             </label>
             <label class="admin-auth-field">
               <span>Confirm New Password</span>
-              <input type="password" name="new_password_confirmation" placeholder="Confirm new password" />
+              <input type="password" name="password_confirmation" autocomplete="new-password" minlength="8" required placeholder="Confirm new password" />
             </label>
-            <button type="button" class="primary-button admin-auth-submit">Change Password</button>
+            <button type="submit" class="primary-button admin-auth-submit">Change Password</button>
           </form>
         </section>
       </div>

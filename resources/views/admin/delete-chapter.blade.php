@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Delete Chapter')
-@section('body_class', 'admin-auth-body')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
@@ -21,7 +21,7 @@
             <span class="admin-dashboard-panel-tag">Delete confirmation</span>
             <h2>{{ $chapter->book?->name ?? $chapter->book_name }} Chapter {{ $chapter->chapter_number }}</h2>
           </div>
-          <p class="admin-dashboard-warning">This action will permanently remove the chapter.</p>
+          <p class="admin-dashboard-warning">This action will permanently remove this chapter and its {{ $chapter->verses_count }} linked verse records. This cannot be undone.</p>
           <div class="admin-dashboard-record-actions">
             <form action="{{ route('admin.upload-chapter.destroy', $chapter) }}" method="POST" class="admin-dashboard-inline-form">
               @csrf

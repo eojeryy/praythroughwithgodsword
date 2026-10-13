@@ -1,14 +1,14 @@
-@extends('layout.app')
+@extends('layout.admin')
 
-@section('title', 'Upload Category')
-@section('body_class', 'admin-auth-body')
+@section('title', 'Add Category')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
   <section class="admin-dashboard-card">
     <div class="admin-dashboard-intro">
       <span class="admin-auth-eyebrow">Content setup</span>
-      <h1>Upload Category</h1>
+      <h1>Add Category</h1>
       <p>Create or organize prayer categories so visitors can find the right topic quickly.</p>
     </div>
 
@@ -25,31 +25,19 @@
             <a href="{{ route('admin.list-categories') }}" class="admin-dashboard-action-link">List Categories</a>
           </div>
 
-          @if (session('status'))
-            <div class="form-alert form-alert-success">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>{{ session('status') }}</span>
-            </div>
-          @endif
-
-          @if ($errors->any())
-            <div class="form-alert form-alert-error">
-              <i class="fa-solid fa-circle-exclamation"></i>
-              <span>{{ $errors->first() }}</span>
-            </div>
-          @endif
-
           <form action="{{ route('admin.upload-category.store') }}" method="POST" class="admin-auth-form">
             @csrf
             <label class="admin-auth-field">
               <span>Category Name</span>
-              <input type="text" name="category_name" value="{{ old('category_name') }}" placeholder="e.g. Healing Prayer" />
+              <input type="text" name="category_name" required value="{{ old('category_name') }}" placeholder="e.g. Healing Prayer" />
             </label>
             <label class="admin-auth-field">
               <span>Description</span>
               <textarea name="category_description" rows="5" placeholder="Short description for this category">{{ old('category_description') }}</textarea>
             </label>
-            <button type="submit" class="primary-button admin-auth-submit">Upload Category</button>
+            <div class="admin-dashboard-record-actions"><button type="submit" class="primary-button admin-auth-submit">Add Category</button>
+              <a href="{{ route('admin.list-categories') }}" class="secondary-button">Cancel</a>
+            </div>
           </form>
         </section>
       </div>

@@ -15,8 +15,12 @@
 @php
   $isLivePage = request()->routeIs('live');
   $isAdminArea = request()->routeIs('admin.*');
+  $isAdminWorkspace = $isAdminArea && auth()->check() && auth()->user()->is_admin;
 @endphp
 
+@if ($isAdminWorkspace)
+  @include('admin.partials.topbar')
+@else
 <header class="site-header" id="site-header">
   <div class="header-shell">
     <a href="{{ route('home') }}" class="brand" aria-label="PrayThroughWithGodsword.com home">
@@ -96,9 +100,21 @@
     </div>
   </div>
 </header>
+@endif
 
+@if ($isAdminWorkspace)
+  <div class="admin-workspace-alerts">
+    @if (session('status'))
+      <div class="form-alert form-alert-success" role="status"><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span>{{ session('status') }}</span></div>
+    @endif
+    @if ($errors->any())
+      <div class="form-alert form-alert-error" role="alert"><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
+    @endif
+  </div>
+@endif
 @yield('content')
 
+@unless ($isAdminWorkspace)
 <footer class="site-footer" id="contact">
   <div class="footer-top">
     <div class="footer-brand">
@@ -168,6 +184,9 @@
     </div>
   </div>
 </footer>
+@else
+<footer class="admin-workspace-footer"><span>PTWG · Content administration</span><a href="{{ route('home') }}">View website ↗</a></footer>
+@endunless
 
 <script src="{{ asset('js/ptgw.js') }}"></script>
 @stack('scripts')

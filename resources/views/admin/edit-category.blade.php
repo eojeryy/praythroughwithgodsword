@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Edit Category')
-@section('body_class', 'admin-auth-body')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
@@ -11,13 +11,6 @@
       <h1>Edit Category</h1>
       <p>Update the selected category on its own page so changes are focused and easy to review.</p>
     </div>
-
-    @if ($errors->any())
-      <div class="form-alert form-alert-error">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        <span>{{ $errors->first() }}</span>
-      </div>
-    @endif
 
     <div class="admin-dashboard-layout">
       @include('admin.partials.sidebar')
@@ -33,13 +26,14 @@
             @method('PUT')
             <label class="admin-auth-field">
               <span>Category Name</span>
-              <input type="text" name="category_name" value="{{ old('category_name', $category->name) }}" />
+              <input type="text" name="category_name" required value="{{ old('category_name', $category->name) }}" />
             </label>
             <label class="admin-auth-field">
               <span>Description</span>
-              <input type="text" name="category_description" value="{{ old('category_description', $category->description) }}" placeholder="Short description for this category" />
+              <textarea name="category_description" rows="3" maxlength="1000" placeholder="Short description for this category">{{ old('category_description', $category->description) }}</textarea>
             </label>
             <div class="admin-dashboard-record-actions">
+              <a href="{{ route('admin.show-category', $category) }}" class="secondary-button">View record</a>
               <button type="submit" class="primary-button admin-auth-submit">Save Changes</button>
               <a href="{{ route('admin.list-categories') }}" class="secondary-button">Back to List</a>
             </div>

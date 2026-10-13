@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Models\Chapter;
 use App\Models\Category;
+use App\Models\Chapter;
 use App\Models\Testament;
 use App\Models\User;
 use App\Models\Verse;
@@ -104,9 +104,7 @@ class AdminAuthController extends Controller
             'totalBooks' => Book::count(),
             'totalChapters' => Chapter::count(),
             'totalVerses' => Verse::count(),
-            'latestCategory' => Category::latest()->first(),
-            'latestBook' => Book::with('testament')->latest()->first(),
-            'latestVerse' => Verse::with('chapter.book')->latest()->first(),
+            'recentVerses' => Verse::with(['chapter.book', 'category'])->latest()->take(8)->get(),
         ]);
     }
 
@@ -117,15 +115,15 @@ class AdminAuthController extends Controller
 
     public function listCategories(Request $request): View
     {
-        $categories = Category::query()
+        $categories = Category::withCount('verses')
             ->when($request->filled('category_name'), function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->string('category_name')->trim() . '%');
+                $query->where('name', 'like', '%'.$request->string('category_name')->trim().'%');
             })
             ->when($request->filled('description'), function ($query) use ($request) {
-                $query->where('description', 'like', '%' . $request->string('description')->trim() . '%');
+                $query->where('description', 'like', '%'.$request->string('description')->trim().'%');
             })
             ->latest()
-            ->get();
+            ->paginate(20)->withQueryString();
 
         return view('admin.list-categories', [
             'categories' => $categories,
@@ -143,7 +141,7 @@ class AdminAuthController extends Controller
     public function deleteCategory(Category $category): View
     {
         return view('admin.delete-category', [
-            'category' => $category,
+            'category' => $category->loadCount('verses'),
         ]);
     }
 
@@ -167,7 +165,7 @@ class AdminAuthController extends Controller
     public function updateCategory(Request $request, Category $category): RedirectResponse
     {
         $validated = $request->validate([
-            'category_name' => ['required', 'string', 'max:255', 'unique:categories,name,' . $category->id],
+            'category_name' => ['required', 'string', 'max:255', 'unique:categories,name,'.$category->id],
             'category_description' => ['nullable', 'string', 'max:1000'],
         ]);
 
@@ -199,16 +197,16 @@ class AdminAuthController extends Controller
     {
         $testaments = Testament::withCount('books')
             ->when($request->filled('testament_name'), function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->string('testament_name')->trim() . '%');
+                $query->where('name', 'like', '%'.$request->string('testament_name')->trim().'%');
             })
             ->when($request->filled('summary'), function ($query) use ($request) {
-                $query->where('summary', 'like', '%' . $request->string('summary')->trim() . '%');
+                $query->where('summary', 'like', '%'.$request->string('summary')->trim().'%');
             })
             ->when($request->filled('book_count'), function ($query) use ($request) {
                 $query->has('books', '=', $request->integer('book_count'));
             })
             ->latest()
-            ->get();
+            ->paginate(20)->withQueryString();
 
         return view('admin.list-testaments', [
             'testaments' => $testaments,
@@ -255,13 +253,13 @@ class AdminAuthController extends Controller
                 $query->where('testament_id', $request->integer('testament_id'));
             })
             ->when($request->filled('book_name'), function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->string('book_name')->trim() . '%');
+                $query->where('name', 'like', '%'.$request->string('book_name')->trim().'%');
             })
             ->when($request->filled('chapter_count'), function ($query) use ($request) {
                 $query->has('chapters', '=', $request->integer('chapter_count'));
             })
             ->latest()
-            ->get();
+            ->paginate(20)->withQueryString();
 
         return view('admin.list-books', [
             'books' => $books,
@@ -281,7 +279,7 @@ class AdminAuthController extends Controller
     public function deleteBook(Book $book): View
     {
         return view('admin.delete-book', [
-            'book' => $book,
+            'book' => $book->loadCount('chapters'),
         ]);
     }
 
@@ -306,7 +304,7 @@ class AdminAuthController extends Controller
     {
         $validated = $request->validate([
             'testament_id' => ['required', 'exists:testaments,id'],
-            'book_name' => ['required', 'string', 'max:255', 'unique:books,name,' . $book->id],
+            'book_name' => ['required', 'string', 'max:255', 'unique:books,name,'.$book->id],
         ]);
 
         $book->update([
@@ -342,7 +340,7 @@ class AdminAuthController extends Controller
 
     public function listChapters(Request $request): View
     {
-        $chapters = Chapter::with('book.testament')
+        $chapters = Chapter::with('book.testament')->withCount('verses')
             ->when($request->filled('testament_id'), function ($query) use ($request) {
                 $query->whereHas('book', function ($bookQuery) use ($request) {
                     $bookQuery->where('testament_id', $request->integer('testament_id'));
@@ -355,7 +353,7 @@ class AdminAuthController extends Controller
                 $query->where('chapter_number', $request->integer('chapter_number'));
             })
             ->latest()
-            ->get();
+            ->paginate(20)->withQueryString();
 
         return view('admin.list-chapters', [
             'chapters' => $chapters,
@@ -376,7 +374,7 @@ class AdminAuthController extends Controller
     public function deleteChapter(Chapter $chapter): View
     {
         return view('admin.delete-chapter', [
-            'chapter' => $chapter->load('book'),
+            'chapter' => $chapter->load('book')->loadCount('verses'),
         ]);
     }
 
@@ -488,13 +486,13 @@ class AdminAuthController extends Controller
                 $query->where('verse_number', trim((string) $request->input('verse_number')));
             })
             ->when($request->filled('prayer_topic'), function ($query) use ($request) {
-                $query->where('prayer_topic', 'like', '%' . $request->string('prayer_topic')->trim() . '%');
+                $query->where('prayer_topic', 'like', '%'.$request->string('prayer_topic')->trim().'%');
             })
             ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where('verse_text', 'like', '%' . $request->string('search')->trim() . '%');
+                $query->where('verse_text', 'like', '%'.$request->string('search')->trim().'%');
             })
             ->latest()
-            ->get();
+            ->paginate(20)->withQueryString();
 
         return view('admin.list-verses', [
             'verses' => $verses,
@@ -547,7 +545,7 @@ class AdminAuthController extends Controller
 
         return redirect()
             ->route('admin.list-verses')
-            ->with('status', count($validated['entries']) === 1 ? 'Verse uploaded successfully.' : count($validated['entries']) . ' verses uploaded successfully.');
+            ->with('status', count($validated['entries']) === 1 ? 'Verse uploaded successfully.' : count($validated['entries']).' verses uploaded successfully.');
     }
 
     public function updateVerse(Request $request, Verse $verse): RedirectResponse
@@ -582,6 +580,102 @@ class AdminAuthController extends Controller
     public function changePassword(): View
     {
         return view('admin.change-password');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'different:current_password'],
+        ]);
+
+        $request->user()->update(['password' => $validated['password']]);
+        $request->session()->regenerate();
+
+        return redirect()->route('admin.change-password')->with('status', 'Password updated successfully.');
+    }
+
+    public function editTestament(Testament $testament): View
+    {
+        return view('admin.edit-testament', compact('testament'));
+    }
+
+    public function deleteTestament(Testament $testament): View
+    {
+        return view('admin.delete-testament', ['testament' => $testament->loadCount('books')]);
+    }
+
+    public function updateTestament(Request $request, Testament $testament): RedirectResponse
+    {
+        $validated = $request->validate([
+            'testament_name' => ['required', 'string', 'max:255', Rule::unique('testaments', 'name')->ignore($testament->id)],
+            'testament_summary' => ['nullable', 'string', 'max:1000'],
+        ]);
+        $testament->update(['name' => $validated['testament_name'], 'summary' => $validated['testament_summary'] ?? null]);
+
+        return redirect()->route('admin.list-testaments')->with('status', 'Testament updated successfully.');
+    }
+
+    public function destroyTestament(Testament $testament): RedirectResponse
+    {
+        if ($testament->books()->exists()) {
+            return redirect()->route('admin.list-testaments')->withErrors(['testament' => 'Move or delete the linked books before deleting this testament.']);
+        }
+        $testament->delete();
+
+        return redirect()->route('admin.list-testaments')->with('status', 'Testament deleted successfully.');
+    }
+
+    public function showTestament(Testament $testament): View
+    {
+        return view('admin.show-record', [
+            'record' => $testament, 'type' => 'testament', 'title' => $testament->name,
+            'description' => $testament->summary, 'facts' => ['Books' => $testament->books()->count()],
+            'children' => $testament->books()->withCount('chapters')->orderBy('name')->paginate(20)->withQueryString(),
+            'childType' => 'book', 'childLabel' => 'Books', 'publicUrl' => null,
+        ]);
+    }
+
+    public function showBook(Book $book): View
+    {
+        return view('admin.show-record', [
+            'record' => $book, 'type' => 'book', 'title' => $book->name,
+            'description' => null, 'facts' => ['Testament' => $book->testament?->name ?? 'Unassigned', 'Chapters' => $book->chapters()->count()],
+            'children' => $book->chapters()->withCount('verses')->orderBy('chapter_number')->paginate(20)->withQueryString(),
+            'childType' => 'chapter', 'childLabel' => 'Chapters', 'publicUrl' => route('books.chapters', $book),
+        ]);
+    }
+
+    public function showChapter(Chapter $chapter): View
+    {
+        return view('admin.show-record', [
+            'record' => $chapter, 'type' => 'chapter', 'title' => ($chapter->book?->name ?? $chapter->book_name).' '.$chapter->chapter_number,
+            'description' => null, 'facts' => ['Testament' => $chapter->book?->testament?->name ?? 'Unassigned', 'Verses' => $chapter->verses()->count()],
+            'children' => $chapter->verses()->with(['category', 'chapter.book'])->orderBy('id')->paginate(20)->withQueryString(),
+            'childType' => 'verse', 'childLabel' => 'Verses', 'publicUrl' => route('chapters.show', $chapter),
+        ]);
+    }
+
+    public function showCategory(Category $category): View
+    {
+        return view('admin.show-record', [
+            'record' => $category, 'type' => 'category', 'title' => $category->name,
+            'description' => $category->description, 'facts' => ['Verses' => $category->verses()->count()],
+            'children' => $category->verses()->with('chapter.book')->latest()->paginate(20)->withQueryString(),
+            'childType' => 'verse', 'childLabel' => 'Verses', 'publicUrl' => route('categories.topics', $category),
+        ]);
+    }
+
+    public function showVerse(Verse $verse): View
+    {
+        return view('admin.show-record', [
+            'record' => $verse, 'type' => 'verse',
+            'title' => ($verse->chapter?->book?->name ?? $verse->chapter?->book_name).' '.$verse->chapter?->chapter_number.':'.$verse->verse_number,
+            'description' => html_entity_decode(strip_tags(preg_replace('/<br\s*\/?\s*>|<\/p>|<\/li>/i', "\n", $verse->verse_text)), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+            'facts' => ['Prayer topic' => $verse->prayer_topic ?? 'Unassigned', 'Category' => $verse->category?->name ?? 'Unassigned', 'Testament' => $verse->chapter?->book?->testament?->name ?? 'Unassigned'],
+            'children' => null, 'childType' => null, 'childLabel' => null,
+            'publicUrl' => $verse->chapter ? route('chapters.show', $verse->chapter) : null,
+        ]);
     }
 
     public function logout(Request $request): RedirectResponse

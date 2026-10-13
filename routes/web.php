@@ -4,8 +4,8 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\LivePrayerController;
 use App\Http\Controllers\MemberAuthController;
 use App\Models\Book;
-use App\Models\Chapter;
 use App\Models\Category;
+use App\Models\Chapter;
 use App\Models\Verse;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +13,7 @@ Route::get('/', function () {
     $buildTopicsForTestament = function (string $keyword) {
         return Verse::with(['chapter.book.testament', 'category'])
             ->whereHas('chapter.book.testament', function ($query) use ($keyword) {
-                $query->where('name', 'like', '%' . $keyword . '%');
+                $query->where('name', 'like', '%'.$keyword.'%');
             })
             ->get()
             ->filter(fn ($verse) => filled(trim((string) $verse->prayer_topic)))
@@ -35,7 +35,7 @@ Route::get('/', function () {
     $buildDistinctChaptersForTestament = function (string $keyword) {
         return Chapter::with('book.testament')
             ->whereHas('book.testament', function ($query) use ($keyword) {
-                $query->where('name', 'like', '%' . $keyword . '%');
+                $query->where('name', 'like', '%'.$keyword.'%');
             })
             ->orderBy('book_name')
             ->orderBy('chapter_number')
@@ -89,7 +89,7 @@ Route::get('/categories/{category}/topics', function (Category $category) {
                 'books_count' => $group->pluck('chapter.book.name')->filter()->unique()->count(),
                 'chapters_count' => $group->pluck('chapter_id')->filter()->unique()->count(),
                 'first_reference' => $first?->chapter?->book?->name
-                    ? $first->chapter->book->name . ' ' . $first->chapter->chapter_number . ':' . $first->verse_number
+                    ? $first->chapter->book->name.' '.$first->chapter->chapter_number.':'.$first->verse_number
                     : null,
             ];
         })
@@ -133,7 +133,7 @@ Route::get('/testaments/{scope}/topics/{topic}', function (string $scope, string
     $verses = Verse::with(['chapter.book.testament', 'category'])
         ->where('prayer_topic', $decodedTopic)
         ->whereHas('chapter.book.testament', function ($query) use ($scope) {
-            $query->where('name', 'like', '%' . $scope . '%');
+            $query->where('name', 'like', '%'.$scope.'%');
         })
         ->orderBy('chapter_id')
         ->orderBy('id')
@@ -145,7 +145,7 @@ Route::get('/testaments/{scope}/topics/{topic}', function (string $scope, string
         'category' => null,
         'topic' => $decodedTopic,
         'verses' => $verses,
-        'backUrl' => route('home') . '#testament-topics',
+        'backUrl' => route('home').'#testament-topics',
         'backLabel' => 'Back to Testament Topics',
         'sectionTag' => $scopeLabel,
     ]);
@@ -174,6 +174,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/dashboard', [AdminAuthController::class, 'dashboard'])->name('dashboard');
     Route::get('/upload-category', [AdminAuthController::class, 'uploadCategory'])->name('upload-category');
     Route::get('/categories', [AdminAuthController::class, 'listCategories'])->name('list-categories');
+    Route::get('/categories/{category}', [AdminAuthController::class, 'showCategory'])->name('show-category');
     Route::get('/categories/{category}/edit', [AdminAuthController::class, 'editCategory'])->name('edit-category');
     Route::get('/categories/{category}/delete', [AdminAuthController::class, 'deleteCategory'])->name('delete-category');
     Route::post('/upload-category', [AdminAuthController::class, 'storeCategory'])->name('upload-category.store');
@@ -181,9 +182,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/upload-category/{category}', [AdminAuthController::class, 'destroyCategory'])->name('upload-category.destroy');
     Route::get('/upload-testament', [AdminAuthController::class, 'uploadTestament'])->name('upload-testament');
     Route::get('/testaments', [AdminAuthController::class, 'listTestaments'])->name('list-testaments');
+    Route::get('/testaments/{testament}', [AdminAuthController::class, 'showTestament'])->name('show-testament');
+    Route::get('/testaments/{testament}/edit', [AdminAuthController::class, 'editTestament'])->name('edit-testament');
+    Route::get('/testaments/{testament}/delete', [AdminAuthController::class, 'deleteTestament'])->name('delete-testament');
+    Route::put('/upload-testament/{testament}', [AdminAuthController::class, 'updateTestament'])->name('upload-testament.update');
+    Route::delete('/upload-testament/{testament}', [AdminAuthController::class, 'destroyTestament'])->name('upload-testament.destroy');
     Route::post('/upload-testament', [AdminAuthController::class, 'storeTestament'])->name('upload-testament.store');
     Route::get('/upload-book', [AdminAuthController::class, 'uploadBook'])->name('upload-book');
     Route::get('/books', [AdminAuthController::class, 'listBooks'])->name('list-books');
+    Route::get('/books/{book}', [AdminAuthController::class, 'showBook'])->name('show-book');
     Route::get('/books/{book}/edit', [AdminAuthController::class, 'editBook'])->name('edit-book');
     Route::get('/books/{book}/delete', [AdminAuthController::class, 'deleteBook'])->name('delete-book');
     Route::post('/upload-book', [AdminAuthController::class, 'storeBook'])->name('upload-book.store');
@@ -191,6 +198,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/upload-book/{book}', [AdminAuthController::class, 'destroyBook'])->name('upload-book.destroy');
     Route::get('/upload-chapter', [AdminAuthController::class, 'uploadChapter'])->name('upload-chapter');
     Route::get('/chapters', [AdminAuthController::class, 'listChapters'])->name('list-chapters');
+    Route::get('/chapters/{chapter}', [AdminAuthController::class, 'showChapter'])->name('show-chapter');
     Route::get('/chapters/{chapter}/edit', [AdminAuthController::class, 'editChapter'])->name('edit-chapter');
     Route::get('/chapters/{chapter}/delete', [AdminAuthController::class, 'deleteChapter'])->name('delete-chapter');
     Route::post('/upload-chapter', [AdminAuthController::class, 'storeChapter'])->name('upload-chapter.store');
@@ -198,11 +206,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/upload-chapter/{chapter}', [AdminAuthController::class, 'destroyChapter'])->name('upload-chapter.destroy');
     Route::get('/upload-verse', [AdminAuthController::class, 'uploadVerse'])->name('upload-verse');
     Route::get('/verses', [AdminAuthController::class, 'listVerses'])->name('list-verses');
+    Route::get('/verses/{verse}', [AdminAuthController::class, 'showVerse'])->name('show-verse');
     Route::get('/verses/{verse}/edit', [AdminAuthController::class, 'editVerse'])->name('edit-verse');
     Route::get('/verses/{verse}/delete', [AdminAuthController::class, 'deleteVerse'])->name('delete-verse');
     Route::post('/upload-verse', [AdminAuthController::class, 'storeVerse'])->name('upload-verse.store');
     Route::put('/upload-verse/{verse}', [AdminAuthController::class, 'updateVerse'])->name('upload-verse.update');
     Route::delete('/upload-verse/{verse}', [AdminAuthController::class, 'destroyVerse'])->name('upload-verse.destroy');
     Route::get('/change-password', [AdminAuthController::class, 'changePassword'])->name('change-password');
+    Route::put('/change-password', [AdminAuthController::class, 'updatePassword'])->name('change-password.update');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 });

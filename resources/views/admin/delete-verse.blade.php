@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Delete Verse')
-@section('body_class', 'admin-auth-body')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">

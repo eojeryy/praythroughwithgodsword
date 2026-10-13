@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Delete Category')
-@section('body_class', 'admin-auth-body')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
@@ -22,7 +22,7 @@
             <h2>{{ $category->name }}</h2>
           </div>
           <p>{{ $category->description ?: 'No description added yet.' }}</p>
-          <p class="admin-dashboard-warning">This action will permanently remove the category.</p>
+          <p class="admin-dashboard-warning">This action will permanently remove the category. Its {{ $category->verses_count }} linked verses will be kept and become uncategorized.</p>
           <div class="admin-dashboard-record-actions">
             <form action="{{ route('admin.upload-category.destroy', $category) }}" method="POST" class="admin-dashboard-inline-form">
               @csrf

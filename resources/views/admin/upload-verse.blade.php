@@ -1,11 +1,11 @@
-@extends('layout.app')
+@extends('layout.admin')
 
-@section('title', 'Upload Verse')
-@section('body_class', 'admin-auth-body')
+@section('title', 'Add Verse')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 @php
-  $entryDrafts = collect(old('entries', []))->values();
+  $entryDrafts = collect(old('entries', request('chapter_id') ? [['chapter_id' => request('chapter_id'), 'verse_number' => '', 'verse_text' => '']] : []))->values();
   $selectedChapterIds = $entryDrafts
     ->pluck('chapter_id')
     ->filter()
@@ -13,7 +13,7 @@
     ->all();
   $selectedChapters = $chapters->whereIn('id', $selectedChapterIds)->values();
   $selectedTestament = $selectedChapters->pluck('book.testament')->filter()->first();
-  $selectedCategory = $categories->firstWhere('id', (int) old('category_id'));
+  $selectedCategory = $categories->firstWhere('id', (int) old('category_id', request('category_id')));
   $chapterBooksCovered = $chapters->pluck('book.name')->filter()->unique()->count();
   $chapterNumbers = $chapters->pluck('chapter_number')->filter()->unique()->sort()->values();
   $selectedFilterTestaments = collect(old('filter_testament_ids', $selectedTestament ? [$selectedTestament->id] : []))
@@ -30,77 +30,14 @@
   <section class="admin-dashboard-card admin-verse-compose-page">
     <div class="admin-dashboard-intro">
       <span class="admin-auth-eyebrow">Scripture content</span>
-      <h1>Upload Verse</h1>
-      <p>Create verse records with clearer scripture context, organized prayer metadata, and a more comfortable writing flow.</p>
+      <h1>Add Verse</h1>
+      <p>Choose chapters, add a prayer topic, and write the scripture text for each entry.</p>
     </div>
 
     <div class="admin-dashboard-layout">
       @include('admin.partials.sidebar')
 
       <div class="admin-dashboard-content">
-        <section class="admin-dashboard-panel admin-dashboard-overview-panel admin-verse-compose-hero">
-          <div class="admin-dashboard-panel-head admin-dashboard-panel-head-inline admin-verse-compose-hero-head">
-            <div class="admin-verse-compose-hero-copy">
-              <span class="admin-dashboard-panel-tag">Verse composer</span>
-              <h2>Build a verse entry with the right reference and prayer focus</h2>
-              <p>Choose the destination chapter, connect the right category, and write formatted verse content in one focused workspace.</p>
-              <div class="admin-verse-compose-hero-pills" aria-label="Verse composer highlights">
-                <span class="admin-verse-compose-hero-pill"><i class="fa-solid fa-book-open"></i> Linked to saved chapters</span>
-                <span class="admin-verse-compose-hero-pill"><i class="fa-solid fa-list-check"></i> Organized by category</span>
-                <span class="admin-verse-compose-hero-pill"><i class="fa-solid fa-pen-nib"></i> Rich-text ready</span>
-              </div>
-            </div>
-            <div class="admin-dashboard-record-actions admin-verse-compose-hero-actions">
-              <a href="{{ route('admin.upload-chapter') }}" class="admin-dashboard-action-link">Create Chapter</a>
-              <a href="{{ route('admin.list-verses') }}" class="admin-dashboard-action-link">List Verses</a>
-            </div>
-          </div>
-
-          <div class="admin-verse-compose-hero-grid">
-            <div class="admin-dashboard-stats-grid admin-verse-compose-stats-grid">
-              <article class="admin-dashboard-stat-card">
-                <span class="admin-dashboard-stat-label">Available chapters</span>
-                <strong>{{ $chapters->count() }}</strong>
-                <p>Saved chapter records ready to receive verse entries.</p>
-              </article>
-              <article class="admin-dashboard-stat-card">
-                <span class="admin-dashboard-stat-label">Books covered</span>
-                <strong>{{ $chapterBooksCovered }}</strong>
-                <p>Distinct books represented by the current chapter library.</p>
-              </article>
-              <article class="admin-dashboard-stat-card">
-                <span class="admin-dashboard-stat-label">Categories</span>
-                <strong>{{ $categories->count() }}</strong>
-                <p>Prayer categories available for organizing the verse topic.</p>
-              </article>
-            </div>
-
-            <aside class="admin-verse-compose-context-card" aria-label="Current verse draft context">
-              <span class="admin-verse-compose-context-label">Draft context</span>
-              <div class="admin-verse-compose-context-stack">
-                <strong>{{ $selectedChapters->count() ? $selectedChapters->count() . ' chapter entr' . ($selectedChapters->count() === 1 ? 'y' : 'ies') . ' prepared' : 'No chapter selected yet' }}</strong>
-                <span>
-                  {{ $selectedChapters->count() ? 'Each selected chapter will create its own verse record.' : 'Choose one or more chapters to start building verse entries.' }}
-                </span>
-              </div>
-              <dl class="admin-verse-compose-context-meta">
-                <div>
-                  <dt>Testament</dt>
-                  <dd>{{ $selectedTestament?->name ?? 'Not selected' }}</dd>
-                </div>
-                <div>
-                  <dt>Category</dt>
-                  <dd>{{ $selectedCategory?->name ?? 'Not selected' }}</dd>
-                </div>
-                <div>
-                  <dt>Verse number</dt>
-                  <dd>{{ old('verse_number') ?: 'Not entered' }}</dd>
-                </div>
-              </dl>
-            </aside>
-          </div>
-        </section>
-
         <section class="admin-dashboard-panel admin-verse-compose-form-panel">
           <div class="admin-dashboard-panel-head admin-dashboard-panel-head-inline admin-verse-compose-form-head">
             <div class="admin-verse-compose-form-copy">
@@ -114,13 +51,6 @@
               <span>That keeps each verse attached to the correct chapter before you format the text.</span>
             </div>
           </div>
-
-          @if ($errors->any())
-            <div class="form-alert form-alert-error">
-              <i class="fa-solid fa-circle-exclamation"></i>
-              <span>{{ $errors->first() }}</span>
-            </div>
-          @endif
 
           <form action="{{ route('admin.upload-verse.store') }}" method="POST" class="admin-auth-form admin-verse-compose-form">
             @csrf
@@ -200,17 +130,17 @@
                 </label>
                 <label class="admin-auth-field admin-verse-compose-field">
                   <span>Category</span>
-                  <select name="category_id">
+                  <select name="category_id" required>
                     <option value="">Select a category</option>
                     @foreach ($categories as $category)
-                      <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>{{ $category->name }}</option>
+                      <option value="{{ $category->id }}" @selected(old('category_id', request('category_id')) == $category->id)>{{ $category->name }}</option>
                     @endforeach
                   </select>
                   <small class="admin-verse-compose-field-hint">Pick the prayer category that best matches the verse focus.</small>
                 </label>
                 <label class="admin-auth-field admin-verse-compose-field">
                   <span>Prayer Topic</span>
-                  <input type="text" name="prayer_topic" value="{{ old('prayer_topic') }}" placeholder="e.g. Divine help and direction" />
+                  <input type="text" name="prayer_topic" required value="{{ old('prayer_topic') }}" placeholder="e.g. Divine help and direction" />
                 </label>
               </div>
             </section>
@@ -274,7 +204,7 @@
             </section>
 
             <div class="admin-dashboard-record-actions admin-verse-compose-submit-row">
-              <button type="submit" class="primary-button admin-auth-submit">Upload Verse</button>
+              <button type="submit" class="primary-button admin-auth-submit">Add Verse</button>
               <a href="{{ route('admin.list-verses') }}" class="secondary-button">Back to List</a>
             </div>
           </form>

@@ -1,14 +1,14 @@
-@extends('layout.app')
+@extends('layout.admin')
 
-@section('title', 'Upload Testament')
-@section('body_class', 'admin-auth-body')
+@section('title', 'Add Testament')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
   <section class="admin-dashboard-card">
     <div class="admin-dashboard-intro">
       <span class="admin-auth-eyebrow">Bible structure</span>
-      <h1>Upload Testament</h1>
+      <h1>Add Testament</h1>
       <p>Add a testament grouping to support Old Testament and New Testament content management.</p>
     </div>
 
@@ -25,24 +25,19 @@
             <a href="{{ route('admin.list-testaments') }}" class="admin-dashboard-action-link">List Testaments</a>
           </div>
 
-          @if ($errors->any())
-            <div class="form-alert form-alert-error">
-              <i class="fa-solid fa-circle-exclamation"></i>
-              <span>{{ $errors->first() }}</span>
-            </div>
-          @endif
-
           <form action="{{ route('admin.upload-testament.store') }}" method="POST" class="admin-auth-form">
             @csrf
             <label class="admin-auth-field">
               <span>Testament Name</span>
-              <input type="text" name="testament_name" value="{{ old('testament_name') }}" placeholder="e.g. Old Testament" />
+              <input type="text" name="testament_name" required value="{{ old('testament_name') }}" placeholder="e.g. Old Testament" />
             </label>
             <label class="admin-auth-field">
               <span>Summary</span>
-              <input type="text" name="testament_summary" value="{{ old('testament_summary') }}" placeholder="Brief note about this testament" />
+              <textarea name="testament_summary" rows="3" maxlength="1000" placeholder="Brief note about this testament">{{ old('testament_summary') }}</textarea>
             </label>
-            <button type="submit" class="primary-button admin-auth-submit">Upload Testament</button>
+            <div class="admin-dashboard-record-actions"><button type="submit" class="primary-button admin-auth-submit">Add Testament</button>
+              <a href="{{ route('admin.list-testaments') }}" class="secondary-button">Cancel</a>
+            </div>
           </form>
         </section>
       </div>

@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Edit Chapter')
-@section('body_class', 'admin-auth-body')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
@@ -11,13 +11,6 @@
       <h1>Edit Chapter</h1>
       <p>Update the selected chapter on its own page.</p>
     </div>
-
-    @if ($errors->any())
-      <div class="form-alert form-alert-error">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        <span>{{ $errors->first() }}</span>
-      </div>
-    @endif
 
     <div class="admin-dashboard-layout">
       @include('admin.partials.sidebar')
@@ -33,7 +26,7 @@
             @method('PUT')
             <label class="admin-auth-field">
               <span>Book</span>
-              <select name="book_id">
+              <select name="book_id" required>
                 <option value="">Select a book</option>
                 @foreach ($books as $book)
                   <option value="{{ $book->id }}" @selected(old('book_id', $chapter->book_id) == $book->id)>{{ $book->name }}</option>
@@ -42,9 +35,10 @@
             </label>
             <label class="admin-auth-field">
               <span>Chapter Number</span>
-              <input type="number" name="chapter_number" value="{{ old('chapter_number', $chapter->chapter_number) }}" min="1" />
+              <input type="number" name="chapter_number" required value="{{ old('chapter_number', $chapter->chapter_number) }}" min="1" />
             </label>
             <div class="admin-dashboard-record-actions">
+              <a href="{{ route('admin.show-chapter', $chapter) }}" class="secondary-button">View record</a>
               <button type="submit" class="primary-button admin-auth-submit">Save Changes</button>
               <a href="{{ route('admin.list-chapters') }}" class="secondary-button">Back to List</a>
             </div>

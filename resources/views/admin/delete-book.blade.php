@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Delete Book')
-@section('body_class', 'admin-auth-body')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
@@ -23,10 +23,13 @@
           </div>
           <p class="admin-dashboard-warning">You can only delete this book if no chapters are attached to it.</p>
           <div class="admin-dashboard-record-actions">
+            @if ($book->chapters_count > 0)
+              <p>This book has {{ $book->chapters_count }} linked chapters. <a href="{{ route('admin.list-chapters', ['book_id' => $book->id]) }}">Manage linked chapters</a> before deleting it.</p>
+            @endif
             <form action="{{ route('admin.upload-book.destroy', $book) }}" method="POST" class="admin-dashboard-inline-form">
               @csrf
               @method('DELETE')
-              <button type="submit" class="admin-dashboard-delete-button">Confirm Delete</button>
+              <button type="submit" class="admin-dashboard-delete-button" @disabled($book->chapters_count > 0)>Confirm Delete</button>
             </form>
             <a href="{{ route('admin.list-books') }}" class="secondary-button">Cancel</a>
           </div>

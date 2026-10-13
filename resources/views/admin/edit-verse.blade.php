@@ -1,7 +1,7 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('title', 'Edit Verse')
-@section('body_class', 'admin-auth-body')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
@@ -11,13 +11,6 @@
       <h1>Edit Verse</h1>
       <p>Update the selected verse on its own page.</p>
     </div>
-
-    @if ($errors->any())
-      <div class="form-alert form-alert-error">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        <span>{{ $errors->first() }}</span>
-      </div>
-    @endif
 
     <div class="admin-dashboard-layout">
       @include('admin.partials.sidebar')
@@ -33,7 +26,7 @@
             @method('PUT')
             <label class="admin-auth-field">
               <span>Chapter</span>
-              <select name="chapter_id">
+              <select name="chapter_id" required>
                 <option value="">Select a chapter</option>
                 @foreach ($chapters as $chapter)
                   <option value="{{ $chapter->id }}" @selected(old('chapter_id', $verse->chapter_id) == $chapter->id)>
@@ -44,7 +37,7 @@
             </label>
             <label class="admin-auth-field">
               <span>Category</span>
-              <select name="category_id">
+              <select name="category_id" required>
                 <option value="">Select a category</option>
                 @foreach ($categories as $category)
                   <option value="{{ $category->id }}" @selected(old('category_id', $verse->category_id) == $category->id)>{{ $category->name }}</option>
@@ -53,11 +46,11 @@
             </label>
             <label class="admin-auth-field">
               <span>Prayer Topic</span>
-              <input type="text" name="prayer_topic" value="{{ old('prayer_topic', $verse->prayer_topic) }}" placeholder="e.g. Divine help and direction" />
+              <input type="text" name="prayer_topic" required value="{{ old('prayer_topic', $verse->prayer_topic) }}" placeholder="e.g. Divine help and direction" />
             </label>
             <label class="admin-auth-field">
               <span>Verse Number</span>
-              <input type="text" name="verse_number" value="{{ old('verse_number', $verse->verse_number) }}" inputmode="text" placeholder="e.g. 1, 2-10, 2:8" />
+              <input type="text" name="verse_number" required value="{{ old('verse_number', $verse->verse_number) }}" inputmode="text" placeholder="e.g. 1, 2-10, 2:8" />
             </label>
             <label class="admin-auth-field">
               <span>Verse Text</span>
@@ -68,6 +61,7 @@
               ])
             </label>
             <div class="admin-dashboard-record-actions">
+              <a href="{{ route('admin.show-verse', $verse) }}" class="secondary-button">View record</a>
               <button type="submit" class="primary-button admin-auth-submit">Save Changes</button>
               <a href="{{ route('admin.list-verses') }}" class="secondary-button">Back to List</a>
             </div>

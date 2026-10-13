@@ -1,14 +1,14 @@
-@extends('layout.app')
+@extends('layout.admin')
 
-@section('title', 'Upload Chapter')
-@section('body_class', 'admin-auth-body')
+@section('title', 'Add Chapter')
+@section('body_class', 'admin-workspace')
 
 @section('content')
 <main class="admin-dashboard-main">
   <section class="admin-dashboard-card">
     <div class="admin-dashboard-intro">
       <span class="admin-auth-eyebrow">Scripture content</span>
-      <h1>Upload Chapter</h1>
+      <h1>Add Chapter</h1>
       <p>Prepare chapter records that can later be attached to books, verses, or prayer references.</p>
     </div>
 
@@ -28,29 +28,24 @@
             </div>
           </div>
 
-          @if ($errors->any())
-            <div class="form-alert form-alert-error">
-              <i class="fa-solid fa-circle-exclamation"></i>
-              <span>{{ $errors->first() }}</span>
-            </div>
-          @endif
-
           <form action="{{ route('admin.upload-chapter.store') }}" method="POST" class="admin-auth-form">
             @csrf
             <label class="admin-auth-field">
               <span>Book</span>
-              <select name="book_id">
+              <select name="book_id" required>
                 <option value="">Select a book</option>
                 @foreach ($books as $book)
-                  <option value="{{ $book->id }}" @selected(old('book_id') == $book->id)>{{ $book->name }}</option>
+                  <option value="{{ $book->id }}" @selected(old('book_id', request('book_id')) == $book->id)>{{ $book->name }}</option>
                 @endforeach
               </select>
             </label>
             <label class="admin-auth-field">
               <span>Chapter Number</span>
-              <input type="number" name="chapter_number" value="{{ old('chapter_number') }}" min="1" placeholder="e.g. 23" />
+              <input type="number" name="chapter_number" required value="{{ old('chapter_number') }}" min="1" placeholder="e.g. 23" />
             </label>
-            <button type="submit" class="primary-button admin-auth-submit">Upload Chapter</button>
+            <div class="admin-dashboard-record-actions"><button type="submit" class="primary-button admin-auth-submit">Add Chapter</button>
+              <a href="{{ route('admin.list-chapters') }}" class="secondary-button">Cancel</a>
+            </div>
           </form>
         </section>
       </div>

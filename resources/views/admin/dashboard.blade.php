@@ -1,152 +1,46 @@
-@extends('layout.app')
-
-@section('title', 'Admin Dashboard')
-@section('body_class', 'admin-auth-body')
-
+@extends('layout.admin')
+@section('title', 'Admin Overview')
+@section('body_class', 'admin-workspace')
 @section('content')
+@php
+  $libraries = [
+    ['label' => 'Categories', 'plural' => 'categories', 'type' => 'category', 'count' => $totalCategories, 'icon' => 'fa-folder-tree', 'description' => 'Organize prayers by theme.'],
+    ['label' => 'Testaments', 'plural' => 'testaments', 'type' => 'testament', 'count' => $totalTestaments, 'icon' => 'fa-book-bible', 'description' => 'Manage scripture groupings.'],
+    ['label' => 'Books', 'plural' => 'books', 'type' => 'book', 'count' => $totalBooks, 'icon' => 'fa-book', 'description' => 'Build your book collection.'],
+    ['label' => 'Chapters', 'plural' => 'chapters', 'type' => 'chapter', 'count' => $totalChapters, 'icon' => 'fa-book-open-reader', 'description' => 'Arrange chapters and verses.'],
+    ['label' => 'Verses', 'plural' => 'verses', 'type' => 'verse', 'count' => $totalVerses, 'icon' => 'fa-quote-left', 'description' => 'Review scripture and prayer topics.'],
+  ];
+@endphp
 <main class="admin-dashboard-main">
-  <section class="admin-dashboard-card admin-home-dashboard-page">
-    <div class="admin-dashboard-intro">
-      <span class="admin-auth-eyebrow">Admin dashboard</span>
-      <h1>Welcome, {{ auth()->user()->name }}.</h1>
-      <p>Manage prayer content, monitor scripture library growth, and jump into the right workflow from one clearer control center.</p>
-    </div>
-
-    @if (session('status'))
-      <div class="form-alert form-alert-success">
-        <i class="fa-solid fa-circle-check"></i>
-        <span>{{ session('status') }}</span>
-      </div>
-    @endif
-
+  <section class="admin-dashboard-card">
+    <div class="admin-dashboard-intro admin-library-intro"><div><span class="admin-auth-eyebrow">Overview</span><h1>Welcome, {{ auth()->user()->name }}.</h1><p>Care for your prayer community’s scripture library.</p></div><a href="{{ route('admin.upload-verse') }}" class="primary-button"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add verse</a></div>
     <div class="admin-dashboard-layout">
       @include('admin.partials.sidebar')
-
       <div class="admin-dashboard-content">
-        <section class="admin-dashboard-panel admin-dashboard-overview-panel admin-home-dashboard-hero">
-          <div class="admin-dashboard-panel-head admin-dashboard-panel-head-inline admin-home-dashboard-hero-head">
-            <div class="admin-home-dashboard-hero-copy">
-              <span class="admin-dashboard-panel-tag">Overview</span>
-              <h2>Your scripture workspace at a glance</h2>
-              <p>See how the content library is growing, spot the latest additions, and move into the next admin task without digging around.</p>
-              <div class="admin-home-dashboard-hero-pills" aria-label="Dashboard highlights">
-                <span class="admin-home-dashboard-hero-pill"><i class="fa-solid fa-gauge-high"></i> Live library totals</span>
-                <span class="admin-home-dashboard-hero-pill"><i class="fa-solid fa-bolt"></i> Faster action routing</span>
-                <span class="admin-home-dashboard-hero-pill"><i class="fa-solid fa-book-journal-whills"></i> Content-focused workflow</span>
-              </div>
-            </div>
-            <div class="admin-dashboard-record-actions admin-home-dashboard-hero-actions">
-              <a href="{{ route('admin.upload-verse') }}" class="admin-dashboard-action-link">Create Verse</a>
-              <a href="{{ route('admin.list-verses') }}" class="admin-dashboard-action-link">Open Verse Library</a>
-            </div>
-          </div>
-
-          <div class="admin-home-dashboard-hero-grid">
-            <div class="admin-dashboard-stats-grid admin-home-dashboard-stats-grid">
-              <article class="admin-dashboard-stat-card">
-                <span class="admin-dashboard-stat-label">Categories</span>
-                <strong>{{ $totalCategories }}</strong>
-                <p>Prayer themes available for organizing scripture entries.</p>
-              </article>
-              <article class="admin-dashboard-stat-card">
-                <span class="admin-dashboard-stat-label">Books</span>
-                <strong>{{ $totalBooks }}</strong>
-                <p>Saved books currently mapped across your testament library.</p>
-              </article>
-              <article class="admin-dashboard-stat-card">
-                <span class="admin-dashboard-stat-label">Verses</span>
-                <strong>{{ $totalVerses }}</strong>
-                <p>Total verse records available for prayer-driven discovery.</p>
-              </article>
-            </div>
-
-            <aside class="admin-home-dashboard-spotlight-card" aria-label="Latest content spotlight">
-              <span class="admin-home-dashboard-spotlight-label">Latest activity</span>
-              <div class="admin-home-dashboard-spotlight-stack">
-                <strong>{{ $latestVerse?->prayer_topic ?? 'No verse entries yet' }}</strong>
-                <span>
-                  @if ($latestVerse)
-                    {{ $latestVerse->chapter?->book?->name ?? $latestVerse->chapter?->book_name }} {{ $latestVerse->chapter?->chapter_number }}:{{ $latestVerse->verse_number }}
-                  @else
-                    Start by creating the first verse entry.
-                  @endif
-                </span>
-              </div>
-              <dl class="admin-home-dashboard-spotlight-meta">
-                <div>
-                  <dt>Latest book</dt>
-                  <dd>{{ $latestBook?->name ?? 'No books yet' }}</dd>
-                </div>
-                <div>
-                  <dt>Latest category</dt>
-                  <dd>{{ $latestCategory?->name ?? 'No categories yet' }}</dd>
-                </div>
-              </dl>
-            </aside>
-          </div>
+        <section class="admin-overview-banner"><div><span>YOUR SCRIPTURE WORKSPACE</span><h2>A growing library.<br />A daily source of prayer.</h2><p>Review your content, keep references accurate, and make every prayer easier to find.</p></div><i class="fa-solid fa-book-open" aria-hidden="true"></i></section>
+        <section class="admin-overview-totals" aria-label="Content totals">
+          @foreach ($libraries as $library)
+            <a href="{{ route('admin.list-' . $library['plural']) }}" class="admin-dashboard-stat-card"><i class="fa-solid {{ $library['icon'] }}" aria-hidden="true"></i><span class="admin-dashboard-stat-label">{{ $library['label'] }}</span><strong>{{ number_format($library['count']) }}</strong><p>Open library →</p></a>
+          @endforeach
         </section>
-
-        <section class="admin-dashboard-panel admin-home-dashboard-workspaces">
-          <div class="admin-dashboard-panel-head">
-            <span class="admin-dashboard-panel-tag">Quick actions</span>
-            <h2>Choose where to work</h2>
-            <p>Jump directly into the part of the content system you want to expand or review next.</p>
-          </div>
-          <div class="admin-home-dashboard-workspace-grid">
-            <a href="{{ route('admin.upload-category') }}" class="admin-home-dashboard-workspace-card">
-              <i class="fa-solid fa-folder-tree"></i>
-              <strong>Categories</strong>
-              <span>Shape prayer themes and topic groupings.</span>
-            </a>
-            <a href="{{ route('admin.upload-testament') }}" class="admin-home-dashboard-workspace-card">
-              <i class="fa-solid fa-book-bible"></i>
-              <strong>Testaments</strong>
-              <span>Organize the top-level scripture structure.</span>
-            </a>
-            <a href="{{ route('admin.upload-book') }}" class="admin-home-dashboard-workspace-card">
-              <i class="fa-solid fa-book"></i>
-              <strong>Books</strong>
-              <span>Add and manage individual books.</span>
-            </a>
-            <a href="{{ route('admin.upload-chapter') }}" class="admin-home-dashboard-workspace-card">
-              <i class="fa-solid fa-book-open-reader"></i>
-              <strong>Chapters</strong>
-              <span>Create the chapter framework for verse entries.</span>
-            </a>
-            <a href="{{ route('admin.upload-verse') }}" class="admin-home-dashboard-workspace-card">
-              <i class="fa-solid fa-quote-left"></i>
-              <strong>Verses</strong>
-              <span>Write and attach scripture content to chapters.</span>
-            </a>
-            <a href="{{ route('admin.change-password') }}" class="admin-home-dashboard-workspace-card">
-              <i class="fa-solid fa-key"></i>
-              <strong>Security</strong>
-              <span>Update your admin password and account access.</span>
-            </a>
-          </div>
+        <section class="admin-dashboard-panel">
+          <div class="admin-dashboard-panel-head admin-dashboard-panel-head-inline"><div><span class="admin-dashboard-panel-tag">Recently added</span><h2>Latest verse records</h2></div><a href="{{ route('admin.list-verses') }}" class="admin-back-link">View all verses →</a></div>
+          @if ($recentVerses->isEmpty())
+            <div class="admin-dashboard-empty-state"><i class="fa-solid fa-book-open" aria-hidden="true"></i><h3>Start your scripture library</h3><p>Add a testament, book, and chapter, then create your first verse.</p><a href="{{ route('admin.upload-testament') }}" class="primary-button">Add testament</a></div>
+          @else
+            <div class="admin-dashboard-table-wrap"><table class="admin-dashboard-table"><thead><tr><th scope="col">Reference</th><th scope="col">Prayer topic</th><th scope="col">Category</th><th scope="col">Actions</th></tr></thead><tbody>
+              @foreach($recentVerses as $verse)
+                <tr><td><a class="admin-record-title" href="{{ route('admin.show-verse', $verse) }}">{{ $verse->chapter?->book?->name ?? $verse->chapter?->book_name }} {{ $verse->chapter?->chapter_number }}:{{ $verse->verse_number }}</a><small class="admin-record-subtitle">{{ $verse->created_at?->format('M d, Y') }}</small></td><td>{{ $verse->prayer_topic }}</td><td>{{ $verse->category?->name ?? 'Uncategorized' }}</td><td>@include('admin.partials.record-actions', ['type' => 'verse', 'record' => $verse])</td></tr>
+              @endforeach
+            </tbody></table></div>
+          @endif
         </section>
-
-        <section class="admin-dashboard-panel admin-home-dashboard-library-panel">
-          <div class="admin-dashboard-panel-head">
-            <span class="admin-dashboard-panel-tag">Library status</span>
-            <h2>Scripture content coverage</h2>
-          </div>
-          <div class="admin-home-dashboard-library-grid">
-            <article class="admin-home-dashboard-library-card">
-              <span>Testaments</span>
-              <strong>{{ $totalTestaments }}</strong>
-              <p>Top-level scripture groups available in the library.</p>
-            </article>
-            <article class="admin-home-dashboard-library-card">
-              <span>Chapters</span>
-              <strong>{{ $totalChapters }}</strong>
-              <p>Chapter records currently prepared for verse assignment.</p>
-            </article>
-            <article class="admin-home-dashboard-library-card">
-              <span>Verse records</span>
-              <strong>{{ $totalVerses }}</strong>
-              <p>Scripture entries ready for review, editing, or reuse.</p>
-            </article>
+        <section class="admin-dashboard-panel">
+          <div class="admin-dashboard-panel-head"><span class="admin-dashboard-panel-tag">Manage content</span><h2>Choose a library</h2></div>
+          <div class="admin-library-grid">
+            @foreach($libraries as $library)
+              <article class="admin-library-card"><i class="fa-solid {{ $library['icon'] }}" aria-hidden="true"></i><h3>{{ $library['label'] }}</h3><p>{{ $library['description'] }}</p><div><a href="{{ route('admin.list-' . $library['plural']) }}">View library →</a><a href="{{ route('admin.upload-' . $library['type']) }}">+ Add {{ $library['type'] }}</a></div></article>
+            @endforeach
           </div>
         </section>
       </div>
