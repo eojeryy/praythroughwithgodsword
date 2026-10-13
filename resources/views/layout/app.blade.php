@@ -9,6 +9,7 @@
   <link rel="apple-touch-icon" href="{{ asset('images/ptwg-favicon.svg') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+  @stack('styles')
 </head>
 <body class="@yield('body_class')">
 @php
@@ -43,8 +44,8 @@
       <nav class="nav-center" aria-label="Main navigation">
         <ul>
           <li><a href="{{ route('home') }}">Home</a></li>
-          <li><a href="{{ $isLivePage ? route('home') . '#specific-prayer' : '#specific-prayer' }}">Category</a></li>
-          <li><a href="{{ $isLivePage ? route('home') . '#classified-prayer' : '#classified-prayer' }}">Explore</a></li>
+          <li><a href="{{ route('home') }}#specific-prayer">Scripture</a></li>
+          <li><a href="{{ route('home') }}#classified-prayer">Categories</a></li>
           <li><a href="{{ $isLivePage ? '#live-chat' : '#contact' }}">{{ $isLivePage ? 'Live Chat' : 'Contact' }}</a></li>
         </ul>
       </nav>
@@ -66,10 +67,10 @@
             <a href="{{ route('admin.signup') }}" class="live-button">Admin Sign Up</a>
           @endauth
         @else
-          <div class="search-container">
+          <form class="search-container" action="{{ route('home') }}#prayer-finder" method="GET" role="search">
             <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
-            <input type="text" placeholder="Search prayers, verses..." aria-label="Search prayers and verses" />
-          </div>
+            <input type="search" name="q" placeholder="Search the prayer library…" aria-label="Search books, prayer topics, and categories" />
+          </form>
 
           @auth
             @if (auth()->user()->is_admin)

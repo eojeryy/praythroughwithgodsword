@@ -1,5 +1,3 @@
-const text = "Pray with Word of God";
-const target = document.getElementById("banner-text");
 const siteHeader = document.getElementById("site-header");
 const headerMenu = document.getElementById("header-menu");
 const headerMenuToggle = document.getElementById("header-menu-toggle");
@@ -8,26 +6,6 @@ const testimonyPanels = document.querySelectorAll(".testimony-panel");
 const topicBrowserTabs = document.querySelectorAll(".topic-browser-tab");
 const topicBrowserPanels = document.querySelectorAll(".topic-browser-panel");
 const chapterTopicFilter = document.querySelector("[data-chapter-topic-filter]");
-
-let index = 0;
-
-function typeWriter() {
-  if (!target) {
-    return;
-  }
-
-  if (index < text.length) {
-    target.textContent += text.charAt(index);
-    index += 1;
-    setTimeout(typeWriter, 100);
-  } else {
-    setTimeout(() => {
-      target.textContent = "";
-      index = 0;
-      typeWriter();
-    }, 1200);
-  }
-}
 
 function syncHeaderState() {
   if (!siteHeader) {
@@ -42,6 +20,7 @@ function activateTestimonyTab(targetId) {
     const isActive = tab.dataset.target === targetId;
     tab.classList.toggle("is-active", isActive);
     tab.setAttribute("aria-selected", String(isActive));
+    tab.tabIndex = isActive ? 0 : -1;
   });
 
   testimonyPanels.forEach((panel) => {
@@ -56,6 +35,7 @@ function activateTopicBrowserTab(targetId) {
     const isActive = tab.dataset.topicTarget === targetId;
     tab.classList.toggle("is-active", isActive);
     tab.setAttribute("aria-selected", String(isActive));
+    tab.tabIndex = isActive ? 0 : -1;
   });
 
   topicBrowserPanels.forEach((panel) => {
@@ -77,7 +57,8 @@ function setHeaderMenuState(isOpen) {
 }
 
 function closeHeaderMenuOnDesktop() {
-  if (window.innerWidth > 1024) {
+  const breakpoint = document.body.classList.contains("home-page") ? 1280 : 1024;
+  if (window.innerWidth > breakpoint) {
     setHeaderMenuState(false);
   }
 }
@@ -145,4 +126,80 @@ syncHeaderState();
 closeHeaderMenuOnDesktop();
 activateTopicBrowserTab("new-topic-panel");
 activateChapterTopic("all");
-setTimeout(typeWriter, 500);
+
+
+// Let keyboard users move between tabs without tabbing through every tab.
+function enableTabKeyboard(tabs, panels, activate, targetAttribute) {
+  tabs.forEach((tab, position) => {
+    tab.id = tab.id || `${targetAttribute}-tab-${position}`;
+    const panel = Array.from(panels).find((item) => item.id === tab.dataset[targetAttribute]);
+    if (panel) panel.setAttribute("aria-labelledby", tab.id);
+    tab.addEventListener("keydown", (event) => {
+      let next = position;
+      if (event.key === "ArrowRight") next = (position + 1) % tabs.length;
+      else if (event.key === "ArrowLeft") next = (position - 1 + tabs.length) % tabs.length;
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = tabs.length - 1;
+      else return;
+      event.preventDefault();
+      activate(tabs[next].dataset[targetAttribute]);
+      tabs[next].focus();
+    });
+  });
+}
+
+enableTabKeyboard(testimonyTabs, testimonyPanels, activateTestimonyTab, "target");
+enableTabKeyboard(topicBrowserTabs, topicBrowserPanels, activateTopicBrowserTab, "topicTarget");
+activateTestimonyTab("new-testimony-panel");
+
+const homeSearch = document.querySelector("[data-home-search]");
+if (homeSearch) {
+  const results = document.querySelector("[data-home-results]");
+  const list = document.querySelector("[data-home-search-list]");
+  const status = document.querySelector("[data-home-search-status]");
+  const empty = document.querySelector("[data-home-search-empty]");
+  const clear = document.querySelector("[data-home-search-clear]");
+  const library = Array.from(document.querySelectorAll("[data-home-search-item]"));
+
+  function searchHomeLibrary(updateAddress = false) {
+    const query = homeSearch.value.trim();
+    const words = query.toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    const matches = words.length ? library.filter((item) => {
+      const searchable = `${item.dataset.searchTitle} ${item.textContent}`.toLocaleLowerCase();
+      return words.every((word) => searchable.includes(word));
+    }) : [];
+    results.hidden = !query;
+    list.replaceChildren();
+    matches.forEach((item) => {
+      const link = document.createElement("a");
+      link.href = item.href;
+      link.className = "home-search-result";
+      const kind = document.createElement("small");
+      kind.textContent = item.dataset.searchKind;
+      const title = document.createElement("strong");
+      title.textContent = item.dataset.searchTitle;
+      link.append(kind, title);
+      list.append(link);
+    });
+    status.textContent = `${matches.length} result${matches.length === 1 ? "" : "s"} for “${query}”`;
+    empty.hidden = matches.length > 0;
+    if (updateAddress) {
+      const url = new URL(window.location.href);
+      if (query) url.searchParams.set("q", query);
+      else url.searchParams.delete("q");
+      window.history.replaceState(null, "", url);
+    }
+  }
+
+  homeSearch.addEventListener("input", () => searchHomeLibrary(true));
+  homeSearch.form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    searchHomeLibrary(true);
+  });
+  clear.addEventListener("click", () => {
+    homeSearch.value = "";
+    searchHomeLibrary(true);
+    homeSearch.focus();
+  });
+  searchHomeLibrary();
+}
