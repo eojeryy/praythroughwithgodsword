@@ -225,6 +225,7 @@ a {
 }
 
 .search-container input[type="text"],
+.search-container input[type="search"],
 .prayer-search-container input[type="text"] {
   width: 100%;
   border: 0;

@@ -21,10 +21,6 @@
   <div class="header-shell">
     <a href="{{ route('home') }}" class="brand" aria-label="PrayThroughWithGodsword.com home">
       <img src="{{ asset('images/ptwg-header-logo.png') }}" alt="PTWG logo" class="brand-logo" width="96" height="96" />
-      <span class="brand-copy">
-        <strong>PTWG</strong>
-        <small>PrayThroughWithGodsword.com</small>
-      </span>
     </a>
 
     <button
@@ -69,7 +65,7 @@
         @else
           <form class="search-container" action="{{ route('home') }}#prayer-finder" method="GET" role="search">
             <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
-            <input type="search" name="q" placeholder="Search the prayer library…" aria-label="Search books, prayer topics, and categories" />
+            <input type="search" name="q" placeholder="Search prayers…" aria-label="Search books, prayer topics, and categories" />
           </form>
 
           @auth
@@ -87,7 +83,7 @@
               </form>
             @endif
           @else
-            <a href="{{ route('member.signin') }}" class="secondary-button header-link-button">Member Sign In</a>
+            <a href="{{ route('member.signin') }}" class="secondary-button header-link-button" @if(request()->routeIs('member.signin')) aria-current="page" @endif>Member Sign In</a>
             <a href="{{ route('member.signup') }}" class="member-cta-button">Become a Member</a>
           @endauth
         @endif
@@ -174,5 +170,6 @@
 </footer>
 
 <script src="{{ asset('js/ptgw.js') }}"></script>
+@stack('scripts')
 </body>
 </html>

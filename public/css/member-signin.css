@@ -1,0 +1,109 @@
+.member-signin-page { background: radial-gradient(ellipse at 10% 20%, #eee7d7 0, transparent 48%), #f6f5ef; }
+.member-signin-page .brand-logo { width: 64px; height: 64px; }
+.member-signin-page .header-shell { padding: 12px max(24px, calc((100vw - 1200px) / 2)); gap: 16px; background: #194b39; box-shadow: 0 4px 20px #0f3d2e12; }
+.member-signin-page .nav-center a { padding: 10px 12px; font-size: 14px; }
+.member-signin-page .header-actions { gap: 10px; }
+.member-signin-page .header-actions > a { padding: 11px 15px; font-size: 13px; white-space: nowrap; box-shadow: none; }
+.member-signin-page .header-link-button[aria-current='page'] { background: #ffffff12; border: 1px solid #ffffff26; }
+.member-signin-page .member-cta-button { background: #f3d294; color: #193d2c; }
+.member-signin-page .member-cta-button:hover { background: #f6dcaa; }
+.member-signin-page .search-container { width: 200px; min-width: 0; padding: 10px 13px; }
+.member-signin-page .search-container input { border: 0; background: transparent; font: inherit; font-size: 13px; min-width: 0; }
+.member-signin-main { max-width: 1120px; margin: auto; padding: 32px 24px 44px; }
+.member-back-link { display: inline-flex; gap: 10px; align-items: center; margin-bottom: 22px; color: #506459; font-size: 14px; text-decoration: none; }
+.member-back-link:hover { color: #0f3d2e; text-decoration: underline; }
+.member-signin-shell { display: grid; grid-template-columns: 1.08fr 1fr; border: 1px solid #dce3da; border-radius: 26px; overflow: hidden; background: #fff; box-shadow: 0 18px 55px #193d2c0d; }
+.member-welcome-panel { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; padding: 44px; background: linear-gradient(145deg, #123d30, #245844); color: #fffdf5; }
+.member-welcome-panel::after { content: ''; position: absolute; z-index: -1; width: 400px; height: 400px; border: 1px solid #e8d7a51a; border-radius: 50%; right: -270px; top: -160px; box-shadow: 0 0 0 45px #e8d7a508, 0 0 0 90px #e8d7a506; pointer-events: none; }
+.member-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; color: #e1e9dd; }
+.member-eyebrow > span { width: 6px; height: 6px; border-radius: 50%; background: #f4cc76; }
+.member-welcome-copy h1 { margin: 30px 0 18px; font-size: clamp(32px, 3.2vw, 44px); letter-spacing: -.04em; line-height: 1.2; font-weight: 650; }
+.member-welcome-copy h1 em { color: #f3d294; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -.025em; }
+.member-welcome-copy > p { max-width: 390px; margin: 0; font-size: 14px; line-height: 1.85; color: #d8e5dc; }
+.member-benefits { display: grid; gap: 22px; list-style: none; padding: 0; margin: 32px 0; }
+.member-benefits li { display: flex; align-items: center; gap: 15px; }
+.member-benefits li > i { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: #ffffff0c; border: 1px solid #ffffff19; color: #f3d294; flex-shrink: 0; font-size: 16px; }
+.member-benefits strong { display: block; font-size: 14px; font-weight: 600; }
+.member-benefits span { display: block; margin-top: 2px; font-size: 12px; color: #c6dbce; }
+.member-scripture { margin: auto 0 0; border-top: 1px solid #ffffff24; padding-top: 24px; }
+.member-scripture p { margin: 0 0 6px; font: italic 22px/1.5 Georgia, 'Times New Roman', serif; color: #f6e7c6; }
+.member-scripture cite { font-size: 10px; font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: #c6dbce; }
+.member-signin-card { padding: 46px 44px; align-self: center; min-width: 0; }
+.member-form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #687769; }
+.member-form-heading h2 { margin: 8px 0; color: #193d2c; font-size: 30px; letter-spacing: -.035em; line-height: 1.3; }
+.member-form-heading p { margin: 0; color: #66716b; font-size: 14px; }
+.member-signin-form { display: grid; gap: 22px; margin-top: 30px; }
+.member-field { display: grid; gap: 8px; }
+.member-field label { font-size: 13px; color: #263c30; font-weight: 600; }
+.member-input-wrap { position: relative; }
+.member-input-wrap > i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #7b8c80; pointer-events: none; font-size: 14px; }
+.member-input-wrap input { width: 100%; min-height: 52px; padding: 13px 16px 13px 42px; border: 1px solid #d9e0d9; border-radius: 11px; background: #fcfdfb; font: inherit; font-size: 14px; color: #193d2c; transition: border-color .15s, box-shadow .15s; }
+.member-input-wrap input::placeholder { color: #788479; }
+.member-input-wrap input:focus { outline: none; border-color: #386e51; box-shadow: 0 0 0 3px #386e511f; background: #fff; }
+.member-input-wrap input[aria-invalid='true'] { border-color: #b5453b; }
+.member-field small { font-size: 11px; color: #68746b; }
+.member-field .member-field-error { color: #a52a21; }
+.member-password-wrap input { padding-right: 54px; }
+.member-password-toggle { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 42px; height: 42px; border: 0; border-radius: 8px; color: #5b7162; background: transparent; cursor: pointer; }
+.member-password-toggle[hidden] { display: none; }
+.member-password-toggle:hover { background: #eef3ed; }
+.member-remember { display: inline-flex; align-items: center; gap: 9px; width: fit-content; font-size: 13px; color: #536358; cursor: pointer; }
+.member-remember input { width: 16px; height: 16px; margin: 0; accent-color: #245844; }
+.member-signin-submit { display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 52px; border: 1px solid #edc264; border-radius: 11px; background: #f6cf7a; color: #273b2d; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 14px #c89a3020; transition: background .15s; }
+.member-signin-submit:hover { background: #f1c35e; }
+.member-signin-submit i { font-size: 12px; }
+.member-signup-prompt { margin-top: 28px; padding-top: 24px; border-top: 1px solid #e8ece5; text-align: center; }
+.member-signup-prompt p { margin: 0 0 7px; font-size: 13px; color: #68746b; }
+.member-signup-prompt a { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; color: #245844; text-decoration: none; }
+.member-signup-prompt a:hover { text-decoration: underline; }
+.member-signup-prompt i { font-size: 11px; }
+.member-signin-note { margin: 24px 0 0; text-align: center; color: #727d71; font-size: 12px; }
+.member-signin-page :is(a, button, input):focus-visible { outline: 3px solid #b7791f; outline-offset: 4px; }
+.member-signin-page .site-footer { margin-top: 0; padding: 32px max(24px, calc((100vw - 1120px) / 2)) 22px; gap: 24px; border-radius: 0; border-top: 3px solid #d8bd81; background: #14251e; box-shadow: none; }
+.member-signin-page .footer-top { grid-template-columns: minmax(0, 1.3fr) minmax(0, .75fr) minmax(0, .85fr) minmax(0, 1.2fr); gap: 32px; }
+.member-signin-page .footer-brand { gap: 14px; }
+.member-signin-page .footer-logo-copy small { font-size: 11px; overflow-wrap: anywhere; }
+.member-signin-page .footer-brand p { font-size: 12px; line-height: 1.8; max-width: 30ch; }
+.member-signin-page .footer-socials { gap: 8px; }
+.member-signin-page .footer-socials a { width: 34px; height: 34px; font-size: 12px; }
+.member-signin-page .footer-item { gap: 10px; }
+.member-signin-page .footer-item h4 { font-size: 13px; margin-bottom: 4px; color: #f3d294; }
+.member-signin-page .footer-item :is(p, a) { font-size: 12px; }
+.member-signin-page .footer-links, .member-signin-page .footer-contact { gap: 8px; }
+.member-signin-page .footer-contact p { overflow-wrap: anywhere; }
+.member-signin-page .footer-contact i { flex-shrink: 0; }
+.member-signin-page .footer-bottom { padding-top: 18px; }
+.member-signin-page .footer-bottom :is(p, a) { font-size: 11px; }
+@media (min-width: 1025px) and (max-width: 1150px) {
+  .member-signin-page .search-container { width: 150px; }
+  .member-signin-page .nav-center a { padding: 10px 8px; }
+  .member-signin-page .header-actions > a { padding: 10px; font-size: 12px; }
+}
+@media (max-width: 1024px) {
+  .member-signin-page .search-container { width: 100%; }
+  .member-signin-page .footer-top { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .member-welcome-panel, .member-signin-card { padding: 32px; }
+  .member-signin-shell { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 680px) {
+  .member-signin-main { padding: 24px 16px 32px; }
+  .member-signin-shell { display: flex; flex-direction: column; border-radius: 20px; }
+  .member-welcome-panel { padding: 28px; }
+  .member-welcome-copy h1 { font-size: 32px; margin-top: 20px; }
+  .member-welcome-copy > p { font-size: 13px; }
+  .member-benefits { display: none; }
+  .member-scripture { margin-top: 22px; padding-top: 18px; }
+  .member-scripture p { font-size: 19px; }
+  .member-signin-card { padding: 30px 24px; width: 100%; }
+  .member-form-heading h2 { font-size: 27px; }
+  .member-signin-note { max-width: 260px; margin: 20px auto 0; }
+  .member-input-wrap input { font-size: 16px; }
+  .member-signin-page .header-shell { padding: 10px 16px; }
+  .member-signin-page .brand-logo { width: 52px; height: 52px; }
+  .member-signin-page .site-footer { padding: 28px 20px 22px; }
+  .member-signin-page .footer-top { gap: 28px 18px; }
+  .member-signin-page .footer-brand, .member-signin-page .footer-top > .footer-item:last-child { grid-column: 1 / -1; }
+  .member-signin-page .footer-brand p { max-width: 44ch; }
+}
