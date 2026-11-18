@@ -9,6 +9,8 @@
   <link rel="apple-touch-icon" href="{{ asset('images/ptwg-favicon.svg') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/theme.css') }}?v={{ filemtime(public_path('css/theme.css')) }}" />
+  <script src="{{ asset('js/theme.js') }}?v={{ filemtime(public_path('js/theme.js')) }}"></script>
   @stack('styles')
 </head>
 <body class="@yield('body_class')">
@@ -51,6 +53,7 @@
       </nav>
 
       <div class="header-actions">
+        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false"><i class="fa-solid fa-moon" aria-hidden="true"></i><i class="fa-solid fa-sun" aria-hidden="true"></i></button>
         @if ($isLivePage)
           <a href="{{ route('home') }}" class="secondary-button header-link-button">Back Home</a>
         @elseif ($isAdminArea)
@@ -128,7 +131,7 @@
       <p>Daily scripture-led prayer support designed to help you move from searching to praying with confidence and direction.</p>
       <div class="footer-socials">
         <a href="https://www.facebook.com/Fonims" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.instagram.com/fountainofnewnesss?srtk=MWpqdDVtZ2Uwb2ZhZA==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
         <a href="https://www.youtube.com/@fountainofnewness" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
         <a href="https://www.tiktok.com/@fountain.of.newness" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
       </div>
