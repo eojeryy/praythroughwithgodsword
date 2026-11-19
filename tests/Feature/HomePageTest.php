@@ -25,6 +25,7 @@ class HomePageTest extends TestCase
         ]))->render();
 
         $this->assertStringContainsString('css/home.css', $html);
+        $this->assertStringContainsString('<span>dark Mode</span>', $html);
         $this->assertStringContainsString('data-search-title="Psalms"', $html);
         $this->assertStringContainsString('data-search-title="Peace &amp; hope"', $html);
         $this->assertStringContainsString('data-search-title="Peace"', $html);

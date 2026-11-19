@@ -53,7 +53,7 @@
       </nav>
 
       <div class="header-actions">
-        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false"><i class="fa-solid fa-moon" aria-hidden="true"></i><i class="fa-solid fa-sun" aria-hidden="true"></i></button>
+        <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false"><i class="fa-solid fa-moon" aria-hidden="true"></i><i class="fa-solid fa-sun" aria-hidden="true"></i><span>dark Mode</span></button>
         @if ($isLivePage)
           <a href="{{ route('home') }}" class="secondary-button header-link-button">Back Home</a>
         @elseif ($isAdminArea)
